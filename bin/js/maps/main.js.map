@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.js"],"names":["processStreetModule","angular","module","console","log"],"mappings":"AAAA,GAAIA,qBAAsBC,QAAQC,OAAO,mBAEzCC,SAAQC,IAAI","file":"../main.js","sourcesContent":["var processStreetModule = angular.module('processStreet', []);\r\n\r\nconsole.log('sup');\r\n"]}
