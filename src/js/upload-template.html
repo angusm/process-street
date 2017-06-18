@@ -1,0 +1,6 @@
+<input class="file-upload" type="file" name="files[]" multiple>
+<div ng-bind="$ctrl.files"></div>
+<ul class="uploaded-files">
+   <li ng-repeat="file in $ctrl.files" ng-bind="file.name">
+   </li>
+</ul>

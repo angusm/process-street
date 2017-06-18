@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 
 var browserSync = require('browser-sync').create();
+var embedTemplates = require('gulp-angular-embed-templates');
 var livereload = require('gulp-livereload');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
@@ -12,14 +13,30 @@ function handleError(err) {
     this.emit('end');
 }
 
-gulp.task('js', function() {
+gulp.task('jquery-file-upload-js', function() {
     // app.js is your main JS file with all your module inclusions
-    return gulp.src('./src/js/main.js')
+    return gulp.src('./src/js/jquery-fileupload.js')
+        .pipe(embedTemplates())
         .on('error', handleError)
         .pipe(sourcemaps.init())
         .on('error', handleError)
-        .pipe(uglify())
+        // .pipe(uglify())
         .on('error', handleError)
+        .pipe(sourcemaps.write('./maps'))
+        .pipe(rename('jquery-fileupload.min.js'))
+        .pipe(gulp.dest('./bin/js/'))
+        .pipe(browserSync.stream());
+});
+
+gulp.task('js', function() {
+    // app.js is your main JS file with all your module inclusions
+    return gulp.src('./src/js/main.js')
+        .pipe(embedTemplates())
+        .on('error', handleError)
+        .pipe(sourcemaps.init())
+        .on('error', handleError)
+        // .pipe(uglify())
+        // .on('error', handleError)
         .pipe(sourcemaps.write('./maps'))
         .pipe(rename('main.min.js'))
         .pipe(gulp.dest('./bin/js/'))
@@ -43,16 +60,21 @@ gulp.task('css', function() {
 gulp.task('browser-sync', function() {
     browserSync.init({
         server: {
-            baseDir: './bin/',
-        },
+            baseDir: './bin/'
+        }
     });
 });
 
-gulp.task('watch', ['css', 'js'], function() {
+gulp.task('watch', [
+    'css',
+    'html',
+    'js',
+    'jquery-file-upload-js'
+], function() {
     browserSync.init({
         server: {
-            baseDir: './bin/',
-        },
+            baseDir: './bin/'
+        }
     });
     gulp.watch('./src/*.html', ['html'])
         .on('error', handleError);
